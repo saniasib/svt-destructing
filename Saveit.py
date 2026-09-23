@@ -13,7 +13,7 @@ client = TelegramClient(
     "save", 
     api_id, 
     api_hash,
-    connection=connection.ConnectionHttp
+    use_ipv6=False
 )
 your_user_id = None
 
