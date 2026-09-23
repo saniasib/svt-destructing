@@ -134,6 +134,7 @@ async def semi_auto_save(event):
         your_user_id = me.id
 
     msg = event.message
+    print(f"[DEBUG] Pesan masuk dari chat_id={event.chat_id}, sender_id={event.sender_id}, has_media={bool(msg.media)}")
 
     # Jangan proses pesan dari diri sendiri
     if event.sender_id == your_user_id:
@@ -141,16 +142,19 @@ async def semi_auto_save(event):
 
     # Wajib batasi chat
     if ALLOWED_CHATS and event.chat_id not in ALLOWED_CHATS:
+        print(f"[DEBUG] Dilewati: chat_id {event.chat_id} tidak ada di ALLOWED_CHATS")
         return
 
     # Hanya media TTL / sekali lihat
     if not has_ttl_media(msg):
+        print(f"[DEBUG] Dilewati: Media bukan tipe TTL/sekali lihat")
         return
 
     # Hanya media yang didukung
     if not is_supported_media(msg):
         return
 
+    print("[DEBUG] Media TTL terdeteksi! Memproses download...")
     await asyncio.sleep(AUTO_DELAY_SECONDS)
     await save_message_media(msg, source="semi-auto")
 
