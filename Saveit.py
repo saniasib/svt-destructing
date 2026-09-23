@@ -3,6 +3,7 @@ import asyncio
 import os
 from dotenv import load_dotenv
 from telethon.network import connection
+from telethon.network.connection import ConnectionTcpFull
 load_dotenv()
 
 api_id = int(os.getenv("API_ID"))
@@ -10,10 +11,14 @@ api_hash = os.getenv("API_HASH")
 handler = os.getenv("HANDLER", ".saveit")
 
 client = TelegramClient(
-    "save", 
-    api_id, 
+    "save",
+    api_id,
     api_hash,
-    use_ipv6=False
+    connection=ConnectionTcpFull,
+    use_ipv6=False,
+    timeout=20,
+    connection_retries=5,
+    retry_delay=2,
 )
 your_user_id = None
 
