@@ -114,6 +114,8 @@ async def manual_save(event):
 
     if your_user_id is None:
         me = await client.get_me()
+        if me is None:
+            return
         your_user_id = me.id
 
     if event.sender_id != your_user_id:
@@ -141,6 +143,8 @@ async def semi_auto_save(event):
 
     if your_user_id is None:
         me = await client.get_me()
+        if me is None:
+            return
         your_user_id = me.id
 
     msg = event.message
@@ -171,12 +175,40 @@ async def semi_auto_save(event):
 
 async def main():
     print(">>> Menghubungkan ke Telegram...", flush=True)
+
     async with client:
         global your_user_id
+
+        print(">>> Mengecek status session...", flush=True)
+
+        if not await client.is_user_authorized():
+            print(">>> Session belum login. Memulai login Telegram...", flush=True)
+
+            await client.start()
+
+            print(">>> Login berhasil.", flush=True)
+
         me = await client.get_me()
+
+        if me is None:
+            raise RuntimeError(
+                "Session Telegram belum authorized. Login gagal atau session tidak valid."
+            )
+
         your_user_id = me.id
-        print(f"Running as: {me.username} (ID: {your_user_id})")
-        print(f"Allowed chats: {ALLOWED_CHATS if ALLOWED_CHATS else 'ALL DISABLED - isi dulu ALLOWED_CHATS'}")
+
+        print(
+            f"Running as: {me.username or me.first_name} "
+            f"(ID: {your_user_id})",
+            flush=True
+        )
+
+        print(
+            f"Allowed chats: "
+            f"{ALLOWED_CHATS if ALLOWED_CHATS else 'ALL DISABLED - isi dulu ALLOWED_CHATS'}",
+            flush=True
+        )
+
         await client.run_until_disconnected()
 
 
