@@ -2,20 +2,25 @@ from telethon import TelegramClient, events
 import asyncio
 import os
 from dotenv import load_dotenv
-
+from telethon.network import connection
 load_dotenv()
 
 api_id = int(os.getenv("API_ID"))
 api_hash = os.getenv("API_HASH")
 handler = os.getenv("HANDLER", ".saveit")
 
-client = TelegramClient("save", api_id, api_hash)
+client = TelegramClient(
+    "save", 
+    api_id, 
+    api_hash,
+    connection=connection.ConnectionTcpAbridged
+)
 your_user_id = None
 
 # Isi chat yang boleh dipantau.
 # Contoh:
 # ALLOWED_CHATS = {123456789, -1009876543210}
-ALLOWED_CHATS = {475497883,1230120835,1193779817}
+ALLOWED_CHATS = {1230120835,1193779817}
 
 # Biar tidak dobel save pesan yang sama
 processed_messages = set()
