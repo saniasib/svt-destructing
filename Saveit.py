@@ -15,7 +15,7 @@ your_user_id = None
 # Isi chat yang boleh dipantau.
 # Contoh:
 # ALLOWED_CHATS = {123456789, -1009876543210}
-ALLOWED_CHATS = {475497883}
+ALLOWED_CHATS = {475497883,1230120835,1193779817}
 
 # Biar tidak dobel save pesan yang sama
 processed_messages = set()
