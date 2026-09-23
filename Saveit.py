@@ -160,6 +160,7 @@ async def semi_auto_save(event):
 
 
 async def main():
+    print(">>> Menghubungkan ke Telegram...", flush=True)
     async with client:
         global your_user_id
         me = await client.get_me()
